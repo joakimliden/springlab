@@ -5,27 +5,12 @@ import org.springframework.stereotype.Repository;
 import se.joakimliden.springlab.entities.Language;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface LanguageRepository extends JpaRepository<Language, Long> {
 
-    List<Language> findAllByLanguage(String language);
+    //List<Language> findAllByLanguage(String language);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    Optional<Language> findAllByLanguage(String language);
 }

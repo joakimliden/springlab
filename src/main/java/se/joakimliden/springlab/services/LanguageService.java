@@ -14,7 +14,7 @@ import java.util.Optional;
 //validera här!
 
 @Service
-public class LanguageService {
+public class LanguageService implements se.joakimliden.springlab.services.Service {
 
     private final LanguageMapper languageMapper;
     private LanguageRepository languageRepository;
@@ -24,14 +24,17 @@ public class LanguageService {
         this.languageMapper = languageMapper;
     }
 
+    @Override
     public List<LanguageDto> getAllLanguages() {
         return languageMapper.mapp(languageRepository.findAll());
     }
 
+    @Override
     public Optional<LanguageDto> getOne(Long id) {
         return languageMapper.mapp(languageRepository.findById(id));
     }
 
+    @Override
     public LanguageDto createLanguage(LanguageDto language) {
         if (language.getLanguage().isEmpty()) {
             throw new RuntimeException();
@@ -40,10 +43,12 @@ public class LanguageService {
         return languageMapper.mapp(languageRepository.save(languageMapper.mapp(language)));
     }
 
+    @Override
     public void delete(Long id) {
         languageRepository.deleteById(id);
     }
 
+    @Override
     public LanguageDto replace(Long id, LanguageDto languageDto) {
         Optional<Language> language = languageRepository.findById(id);
         if (language.isPresent()) {
@@ -57,6 +62,7 @@ public class LanguageService {
     }
 
         //helt onödig nu..
+    @Override
     public LanguageDto update(Long id, LanguageDto languageDto) {
         Optional<Language> language = languageRepository.findById(id);
         if (language.isPresent()) {
@@ -68,5 +74,15 @@ public class LanguageService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                     "Id " + id + " not found.");
         }
+    }
+
+    @Override
+    public Optional<LanguageDto> findByLanguage(String language) {
+
+        return languageMapper.mapp(languageRepository.findAllByLanguage(language));
+        //        return languageMapper.mapp(languageRepository.findAllByLanguage(language));
+
+//       return (LanguageDto) languageMapper.mapp(languageRepository.findAllByLanguage(language));
+//       return languageMapper.mapp(languageRepository.findAllByLanguage(language));
     }
 }
